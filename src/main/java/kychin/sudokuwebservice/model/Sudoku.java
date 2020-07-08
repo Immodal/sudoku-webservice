@@ -9,7 +9,7 @@ public class Sudoku {
 
     public Sudoku(UUID id, String state) {
         this.id = id;
-        this.grid = State.parse(state);
+        this.grid = State.toGrid(state);
     }
 
 

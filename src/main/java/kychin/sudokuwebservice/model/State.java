@@ -12,9 +12,9 @@ public class State {
     /**
      * Converts the given state into an int matrix representation.
      * @param state String representation of game state
-     * @return int matrix representation of state
+     * @return Int matrix representation of state
      */
-    public static int[][] parse(String state) {
+    public static int[][] toGrid(String state) {
         String[] stateArr = state.split("");
         int size = getSize(state);
         int[][] grid = new int[size][size];
@@ -29,7 +29,23 @@ public class State {
     }
 
     /**
-     * Checks the given state to determine if it is valid for parsing.
+     * Converts the given int matrix into its String representation.
+     * @param grid Int matrix representation of state
+     * @return String representation of game state
+     */
+    public static String fromGrid(int[][] grid) {
+        String[] symbols = SYMBOLS.split("");
+        StringBuilder state = new StringBuilder();
+        for (int j=0; j<grid.length; j++) {
+            for (int i=0; i<grid.length; i++) {
+                state.append(symbols[grid[i][j]]);
+            }
+        }
+        return state.toString();
+    }
+
+    /**
+     * Checks the given state to determine if it is valid for conversion to a grid.
      * @param state String representation of game state
      * @return true if state is valid
      */

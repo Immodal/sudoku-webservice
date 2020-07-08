@@ -1,13 +1,13 @@
 package kychin.sudokuwebservice.model;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import org.junit.jupiter.api.Test;
 import java.util.*;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 public class StateTests {
     @Test
-    void parsesStates() {
+    void convertsStateToGridAndBack() {
         String state = "" +
                 "123456789" +
                 "456123456" +
@@ -19,13 +19,17 @@ public class StateTests {
                 "456123456" +
                 "789789123";
 
-        int[][] grid = State.parse(state);
+        String[] stateArr = state.split("");
+        int size = State.getSize(state);
+        int[][] grid = State.toGrid(state);
+
         for (int j=0; j<grid.length; j++) {
             for (int i=0; i<grid.length; i++) {
-                System.out.print(grid[i][j]);
+                assertEquals(grid[i][j], State.SYMBOL_MAP.get(stateArr[i + j * size]));
             }
-            System.out.println();
         }
+
+        assertEquals(State.fromGrid(grid), state);
     }
 
     @Test
