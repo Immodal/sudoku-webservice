@@ -48,6 +48,18 @@ public class SudokuTests {
     };
 
     @Test
+    void checksSolutionIsValid() {
+        assertFalse(Sudoku.checkSolutionIsValid(grids[0]));
+        assertTrue(Sudoku.checkSolutionIsValid(grids[1]));
+        assertFalse(Sudoku.checkSolutionIsValid(grids[2]));
+        assertTrue(Sudoku.checkSolutionIsValid(grids[3]));
+        assertFalse(Sudoku.checkSolutionIsValid(grids[4]));
+        assertFalse(Sudoku.checkSolutionIsValid(grids[5]));
+        assertFalse(Sudoku.checkSolutionIsValid(grids[6]));
+        assertFalse(Sudoku.checkSolutionIsValid(grids[7]));
+    }
+
+    @Test
     void checksValuesAreValid() {
         assertFalse(Sudoku.checkValuesAreValid(grids[0]));
         assertTrue(Sudoku.checkValuesAreValid(grids[1]));

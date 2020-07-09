@@ -84,6 +84,10 @@ public class DancingLinks {
             return id;
         }
 
+        public Column getColumn() {
+            return column;
+        }
+
         /**
          * Inserts the Node n to the right of this Node.
          * @param n Node to be inserted

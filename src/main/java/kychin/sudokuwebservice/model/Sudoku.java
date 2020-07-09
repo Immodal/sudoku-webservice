@@ -8,12 +8,14 @@ public class Sudoku {
     private final String INITIAL_STATE;
 
     private int[][] grid;
+    private DLX dlx;
 
     public Sudoku(UUID id, String state) {
         this.ID = id;
         this.INITIAL_STATE = state;
 
         this.grid = State.toGrid(state);
+        this.dlx = new DLX(this.grid);
     }
 
     /**
@@ -21,7 +23,7 @@ public class Sudoku {
      * @param grid Int Matrix representation of the state
      * @return true if grid contains a valid solution
      */
-    public static boolean validate(int[][] grid) {
+    public static boolean checkSolutionIsValid(int[][] grid) {
         return checkValuesAreValid(grid) && checkRowValuesAreUnique(grid) &&
                 checkColValuesAreUnique(grid) && checkBlockValuesAreUnique(grid);
     }

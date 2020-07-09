@@ -44,4 +44,13 @@ public class DLXTests {
         DLX dlx = new DLX(State.toGrid(state));
         assertEquals(dlx.getDLMString(), dlmExp);
     }
+
+    @Test
+    void findsSolutions() {
+        String state = "295743861431865900876192543387459216612387495549216738763524189928671354154938600";
+        assertTrue(State.isValid(state));
+        DLX dlx = new DLX(State.toGrid(state));
+        dlx.search(10, 10000);
+        assertEquals(2, dlx.getSolutions().size());
+    }
 }
