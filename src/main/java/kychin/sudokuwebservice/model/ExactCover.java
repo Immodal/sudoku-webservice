@@ -55,7 +55,7 @@ public class ExactCover {
      * @param grid Int matrix representing the Sudoku grid
      * @return Row index on the ECM given the parameters
      */
-    public static int getRowIndexMatrix(int row, int col, int value, int[][] grid) {
+    public static int getMatrixRowIndex(int row, int col, int value, int[][] grid) {
         int nValues = grid.length;
         // The *grid row* value of each *matrix Row* only increases by 1 after every col and value for that row has
         // been listed
@@ -81,7 +81,7 @@ public class ExactCover {
                 // And every possible value for each cell
                 for (int v=1; v<grid.length+1; v++) {
                     // Mark its location in the matrix
-                    int rowInd = getRowIndexMatrix(i, j, v, grid);
+                    int rowInd = getMatrixRowIndex(i, j, v, grid);
                     matrix[rowInd][colInd] = true;
                 }
                 // Since only every new *grid col* generates a new *matrix col* increment colInd only after symbols
@@ -105,7 +105,7 @@ public class ExactCover {
                 // And every column where a given row-value pair can occur
                 for (int j = 0; j < grid[0].length; j++) {
                     // Mark its location in the matrix
-                    int rowInd = getRowIndexMatrix(i, j, v, grid);
+                    int rowInd = getMatrixRowIndex(i, j, v, grid);
                     matrix[rowInd][colInd] = true;
                 }
                 // Since only every new row-value pair generates a new *matrix col* increment colInd only after cols
@@ -129,7 +129,7 @@ public class ExactCover {
                 // And every row where a given col-value pair can occur
                 for (int i=0; i<grid.length; i++) {
                     // Mark its location in the matrix
-                    int rowInd = getRowIndexMatrix(i, j, v, grid);
+                    int rowInd = getMatrixRowIndex(i, j, v, grid);
                     matrix[rowInd][colInd] = true;
                 }
                 // Since only every new col-value pair generates a new *matrix col* increment colInd only after rows
@@ -157,7 +157,7 @@ public class ExactCover {
                     for (int i = 0; i < numBlocks; i++) {
                         for (int j = 0; j < numBlocks; j++) {
                             // Mark its location in the matrix
-                            int rowInd = getRowIndexMatrix(iOffset+i, jOffset+j, v, grid);
+                            int rowInd = getMatrixRowIndex(iOffset+i, jOffset+j, v, grid);
                             matrix[rowInd][colInd] = true;
                         }
                     }
