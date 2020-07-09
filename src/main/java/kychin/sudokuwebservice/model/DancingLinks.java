@@ -3,12 +3,33 @@ package kychin.sudokuwebservice.model;
 import java.util.*;
 
 public class DancingLinks {
+    private final Column root;
+
+    public DancingLinks(boolean[][] ecm) {
+        this.root = fromExactCover(ecm);
+    }
+
+    public Column get() {
+        return root;
+    }
+
+    public String toString() {
+        StringBuilder s = new StringBuilder();
+        for (Column c=root.getRight(); c!=root; c=c.getRight()) {
+            s.append("Column ").append(c.getId()).append(": ");
+            for (Node r=c.down; r!=c; r=r.down)
+                s.append(r.getId()).append(",");
+            s.append("\n");
+        }
+        return s.toString();
+    }
+
     /**
      * Converts an Exact Cover Matrix from a boolean[][] to a Dancing Links representation.
      * @param ecm Exact Cover Matrix
      * @return Dancing Links Exact Cover Matrix
      */
-    public static Column fromExactCover(boolean[][] ecm) {
+    protected static Column fromExactCover(boolean[][] ecm) {
         List<Column> columns = new ArrayList<>();
         for (int i=0; i<ecm[0].length; i++) {
             columns.add(new Column(i));
@@ -59,6 +80,10 @@ public class DancingLinks {
             this.column = column;
         }
 
+        public int getId() {
+            return id;
+        }
+
         /**
          * Inserts the Node n to the right of this Node.
          * @param n Node to be inserted
@@ -94,12 +119,20 @@ public class DancingLinks {
     protected static class Column extends Node {
         private int size = 0;
 
+        public Column(int id) {
+            super(id);
+        }
+
         public int getSize() {
             return size;
         }
 
-        public Column(int id) {
-            super(id);
+        public Column getLeft() {
+            return (Column) this.left;
+        }
+
+        public Column getRight() {
+            return (Column) this.right;
         }
 
         /**

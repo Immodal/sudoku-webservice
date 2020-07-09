@@ -62,14 +62,15 @@ public class DancingLinksTests {
                 {false, true, false, false, true},
         };
 
-        DancingLinks.Column root = DancingLinks.fromExactCover(ecm);
+        DancingLinks dc = new DancingLinks(ecm);
+        DancingLinks.Column root = dc.get();
         assertEquals(root, root.right.right.right.right.right.right);
         assertEquals(root, root.left.left.left.left.left.left);
-        checkColumn(root.right, 2);
-        checkColumn(root.right.right, 2);
-        checkColumn(root.right.right.right, 1);
-        checkColumn(root.right.right.right.right, 1);
-        checkColumn(root.right.right.right.right.right, 3);
+        checkColumn(root.right, 0, 2);
+        checkColumn(root.right.right, 1, 2);
+        checkColumn(root.right.right.right, 2, 1);
+        checkColumn(root.right.right.right.right, 3, 1);
+        checkColumn(root.right.right.right.right.right, 4, 3);
 
         assertEquals(root.right.down.right.down, root.left.left);
         assertEquals(root.right.right.down, root.right.right.down.left);
@@ -81,7 +82,8 @@ public class DancingLinksTests {
     /*
     Checks if the column was created correctly
      */
-    private void checkColumn(DancingLinks.Node col, int size) {
+    private void checkColumn(DancingLinks.Node col, int id, int size) {
+        assertEquals(col.getId(), id);
         assertEquals(((DancingLinks.Column) col).getSize(), size);
         DancingLinks.Node current = col;
         for (int i=0; i<size+1; i++) {
@@ -89,6 +91,20 @@ public class DancingLinksTests {
             if(i<size) assertNotSame(col, current);
             else assertEquals(col, current);
         }
+    }
+
+    @Test
+    void convertsToString() {
+        boolean[][] ecm = {
+                {true, false, false, true, true},
+                {true, false, true, false, true},
+                {false, true, false, false, false},
+                {false, true, false, false, true},
+        };
+        String exp = "Column 0: 0,1,\nColumn 1: 2,3,\nColumn 2: 1,\nColumn 3: 0,\nColumn 4: 0,1,3,\n";
+
+        DancingLinks dc = new DancingLinks(ecm);
+        assertEquals(exp, dc.toString());
     }
 
     @Test
@@ -100,8 +116,9 @@ public class DancingLinksTests {
                 {false, true, false, false, true},
         };
 
-        DancingLinks.Column root = DancingLinks.fromExactCover(ecm);
-        DancingLinks.Column c2 = (DancingLinks.Column) root.right.right.right;
+        DancingLinks dc = new DancingLinks(ecm);
+        DancingLinks.Column root = dc.get();
+        DancingLinks.Column c2 = root.getRight().getRight().getRight();
         c2.cover();
         assertEquals(root.right, root.right.right.right.right.right.right); // Column gone
         assertEquals(root.right, root.right.down.down); // row gone
@@ -111,14 +128,14 @@ public class DancingLinksTests {
         assertEquals(root.right.down.down.left, root.right.down.down.right.right); // row back
         assertEquals(((DancingLinks.Column)root.right).getSize(), 2);
 
-        DancingLinks.Column c1 = (DancingLinks.Column) root.right.right;
+        DancingLinks.Column c1 = root.getRight().getRight();
         c1.cover();
         assertEquals(root.right, root.right.right.right.right.right.right); // Column gone
         assertEquals(root.left.up, root.right.down.right.right.down); // rows gone
-        assertEquals(((DancingLinks.Column)root.left).getSize(), 2);
+        assertEquals(root.getLeft().getSize(), 2);
         c1.uncover();
         assertEquals(root.right, root.right.right.right.right.right.right.right); // Column back
         assertEquals(root.left.up, root.right.down.right.right.down.down); // rows back
-        assertEquals(((DancingLinks.Column)root.left).getSize(), 3);
+        assertEquals(root.getLeft().getSize(), 3);
     }
 }

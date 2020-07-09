@@ -21,7 +21,7 @@ public class State {
 
         for (int j=0; j<grid.length; j++) {
             for (int i=0; i<grid.length; i++) {
-                grid[i][j] = SYMBOL_MAP.get(stateArr[i+j*size]);
+                grid[j][i] = SYMBOL_MAP.get(stateArr[i+j*size]);
             }
         }
 
@@ -38,7 +38,7 @@ public class State {
         StringBuilder state = new StringBuilder();
         for (int j=0; j<grid.length; j++) {
             for (int i=0; i<grid.length; i++) {
-                state.append(symbols[grid[i][j]]);
+                state.append(symbols[grid[j][i]]);
             }
         }
         return state.toString();

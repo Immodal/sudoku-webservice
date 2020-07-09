@@ -72,6 +72,6 @@ public class ExactCoverTests {
                 "               1              1               1               1 \n" +
                 "               1               1               1               1\n";
         boolean[][] exm = ExactCover.makeMatrix(new int[4][4]);
-        assertEquals(ExactCover.toString(exm), expEcm);
+        assertEquals(expEcm, ExactCover.toString(exm));
     }
 }

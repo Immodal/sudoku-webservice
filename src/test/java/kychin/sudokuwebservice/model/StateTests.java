@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.util.*;
 
 public class StateTests {
+
     @Test
     void convertsStateToGridAndBack() {
         String state = "" +
@@ -24,11 +25,11 @@ public class StateTests {
 
         for (int j=0; j<grid.length; j++) {
             for (int i=0; i<grid.length; i++) {
-                assertEquals(grid[i][j], State.SYMBOL_MAP.get(stateArr[i + j * size]));
+                assertEquals(State.SYMBOL_MAP.get(stateArr[i + j * size]), grid[j][i]);
             }
         }
 
-        assertEquals(State.fromGrid(grid), state);
+        assertEquals(state, State.fromGrid(grid));
     }
 
     @Test
