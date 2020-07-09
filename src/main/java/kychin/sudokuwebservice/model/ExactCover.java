@@ -2,6 +2,11 @@ package kychin.sudokuwebservice.model;
 
 public class ExactCover {
 
+    /**
+     * Generates an Exact Cover matrix for a Sudoku grid the size of "grid"
+     * @param grid Int matrix representing the Sudoku grid
+     * @return Exact Cover Matrix
+     */
     public static boolean[][] makeMatrix(int[][] grid) {
         int nGridRows = grid.length;
         int nGridCols = grid[0].length;
@@ -42,6 +47,14 @@ public class ExactCover {
         return matrix;
     }
 
+    /**
+     * Calculates the row index on the ECM given the parameters
+     * @param row Row index in Grid
+     * @param col Column index in Grid
+     * @param value Value at Grid[Row][Col]
+     * @param grid Int matrix representing the Sudoku grid
+     * @return Row index on the ECM given the parameters
+     */
     public static int getRowIndexMatrix(int row, int col, int value, int[][] grid) {
         int nValues = grid.length;
         // The *grid row* value of each *matrix Row* only increases by 1 after every col and value for that row has
@@ -55,7 +68,12 @@ public class ExactCover {
         return rowOffset + colOffset + valueIndex;
     }
 
-    // The matrixColumnOffset shows starting column index for this constraint
+    /**
+     * Mutates the matrix with the columns that satisfies the Cell Constraints for each row.
+     * @param matrix Exact Cover Matrix that is under construction
+     * @param grid Int matrix representing the Sudoku grid
+     * @param colInd Column index on the ECM from which this method will start
+     */
     private static void setCellConstraints(boolean[][] matrix, int[][] grid, int colInd) {
         // For each cell in the grid
         for (int i=0; i<grid.length; i++) {
@@ -73,6 +91,12 @@ public class ExactCover {
         }
     }
 
+    /**
+     * Mutates the matrix with the columns that satisfies the Row Constraints for each row.
+     * @param matrix Exact Cover Matrix that is under construction
+     * @param grid Int matrix representing the Sudoku grid
+     * @param colInd Column index on the ECM from which this method will start
+     */
     private static void setRowConstraints(boolean[][] matrix, int[][] grid, int colInd) {
         // For each row in the grid
         for (int i = 0; i < grid.length; i++) {
@@ -91,6 +115,12 @@ public class ExactCover {
         }
     }
 
+    /**
+     * Mutates the matrix with the columns that satisfies the Column Constraints for each row.
+     * @param matrix Exact Cover Matrix that is under construction
+     * @param grid Int matrix representing the Sudoku grid
+     * @param colInd Column index on the ECM from which this method will start
+     */
     private static void setColConstraints(boolean[][] matrix, int[][] grid, int colInd) {
         // For each col in the grid
         for (int j=0; j<grid[0].length; j++) {
@@ -109,6 +139,12 @@ public class ExactCover {
         }
     }
 
+    /**
+     * Mutates the matrix with the columns that satisfies the Block Constraints for each row.
+     * @param matrix Exact Cover Matrix that is under construction
+     * @param grid Int matrix representing the Sudoku grid
+     * @param colInd Column index on the ECM from which this method will start
+     */
     private static void setBlockConstraints(boolean[][] matrix, int[][] grid, int colInd) {
         int numBlocks = (int) Math.sqrt(grid.length); // Per row or per col
 
@@ -133,6 +169,11 @@ public class ExactCover {
         }
     }
 
+    /**
+     * Generates a string representation of the Exact Cover Matrix.
+     * @param matrix Exact Cover Matrix
+     * @return String representation of ECM
+     */
     public static String toString(boolean[][] matrix) {
         StringBuilder strGrid = new StringBuilder();
         for (int i=0; i<matrix.length ; i++) {
@@ -141,10 +182,6 @@ public class ExactCover {
                 if (matrix[i][j]) {
                     strGrid.append("1");
                 } else {
-                    strGrid.append(" ");
-                }
-                // Separator, except at end of line
-                if (j!=matrix[0].length-1) {
                     strGrid.append(" ");
                 }
             }
