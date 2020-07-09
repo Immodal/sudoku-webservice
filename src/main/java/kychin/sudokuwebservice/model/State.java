@@ -5,7 +5,7 @@ import java.util.*;
 
 public class State {
     // Sizes are equal to the number of cells in each row/column.
-    public static final Set<Integer> SIZES = Set.of(4, 9, 16, 25);
+    public static final Set<Integer> SIZES = ExactCover.SIZES;
     public static final String SYMBOLS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     public static final Map<String, Integer> SYMBOL_MAP = initSymbolMap();
 

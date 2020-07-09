@@ -1,13 +1,50 @@
 package kychin.sudokuwebservice.model;
 
+import java.util.*;
+
 public class ExactCover {
+    public static final Set<Integer> SIZES = Set.of(4, 9, 16, 25);
+    public static final Map<Integer, boolean[][]> MATRICES = makeMatrices();
+
+    /**
+     * Calculates the row index on the ECM given the parameters
+     * @param row Row index in Grid
+     * @param col Column index in Grid
+     * @param value Value at Grid[Row][Col]
+     * @param grid Int matrix representing the Sudoku grid
+     * @return Row index on the ECM given the parameters
+     */
+    public static int getMatrixRowIndex(int row, int col, int value, int[][] grid) {
+        int nValues = grid.length;
+        // The *grid row* value of each *matrix Row* only increases by 1 after every col and value for that row has
+        // been listed
+        int rowOffset = row * grid[0].length * nValues;
+        // The *grid col* value of each *matrix Row* only increases by 1 after every value for that row has been listed
+        int colOffset = col * nValues;
+        // Each value changes for every (grid row, grid col) combination in their natural sequence 1 to nValues
+        // Because 0 is not included in the EC Matrix, the index of each value is value-1
+        int valueIndex = value - 1;
+        return rowOffset + colOffset + valueIndex;
+    }
+
+    /**
+     * Pre-make Exact Cover Matrices for all supported sizes and map to their size.
+     * @return Map that maps each matrix to their size
+     */
+    private static Map<Integer, boolean[][]> makeMatrices() {
+        Map<Integer, boolean[][]> matrices = new HashMap<>();
+        for (int size: SIZES) {
+            matrices.put(size, makeMatrix(new int[size][size]));
+        }
+        return Collections.unmodifiableMap(matrices);
+    }
 
     /**
      * Generates an Exact Cover matrix for a Sudoku grid the size of "grid"
      * @param grid Int matrix representing the Sudoku grid
      * @return Exact Cover Matrix
      */
-    public static boolean[][] makeMatrix(int[][] grid) {
+    protected static boolean[][] makeMatrix(int[][] grid) {
         int nGridRows = grid.length;
         int nGridCols = grid[0].length;
         int nValues = grid.length;
@@ -45,27 +82,6 @@ public class ExactCover {
         setBlockConstraints(matrix, grid, blockConStartCol);
 
         return matrix;
-    }
-
-    /**
-     * Calculates the row index on the ECM given the parameters
-     * @param row Row index in Grid
-     * @param col Column index in Grid
-     * @param value Value at Grid[Row][Col]
-     * @param grid Int matrix representing the Sudoku grid
-     * @return Row index on the ECM given the parameters
-     */
-    public static int getMatrixRowIndex(int row, int col, int value, int[][] grid) {
-        int nValues = grid.length;
-        // The *grid row* value of each *matrix Row* only increases by 1 after every col and value for that row has
-        // been listed
-        int rowOffset = row * grid[0].length * nValues;
-        // The *grid col* value of each *matrix Row* only increases by 1 after every value for that row has been listed
-        int colOffset = col * nValues;
-        // Each value changes for every (grid row, grid col) combination in their natural sequence 1 to nValues
-        // Because 0 is not included in the EC Matrix, the index of each value is value-1
-        int valueIndex = value - 1;
-        return rowOffset + colOffset + valueIndex;
     }
 
     /**
