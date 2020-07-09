@@ -2,6 +2,7 @@ package kychin.sudokuwebservice.model;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
+import java.util.*;
 
 public class DLXTests {
     @Test
@@ -50,7 +51,21 @@ public class DLXTests {
         String state = "295743861431865900876192543387459216612387495549216738763524189928671354154938600";
         assertTrue(State.isValid(state));
         DLX dlx = new DLX(State.toGrid(state));
-        dlx.search(10, 10000);
-        assertEquals(2, dlx.getSolutions().size());
+        dlx.search(1000, 10000);
+        checkSolutions(dlx.getSolutions(), 2, 4);
+
+        state = "0000000000000000";
+        assertTrue(State.isValid(state));
+        dlx = new DLX(State.toGrid(state));
+        dlx.search(1000, 10000);
+        checkSolutions(dlx.getSolutions(), 288, 16);
+    }
+
+    // Helper for findsSolutions()
+    private void checkSolutions(List<List<DancingLinks.Node>> solutions, int nSols, int solSize) {
+        assertEquals(nSols, solutions.size());
+        for (int i=0; i<solutions.size(); i++) {
+            assertEquals(solSize, solutions.get(0).size());
+        }
     }
 }

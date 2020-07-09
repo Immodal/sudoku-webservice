@@ -13,7 +13,10 @@ public class DLX {
     private final DancingLinks dlm;
 
     public DLX(int[][] grid) {
+        // Initialize first level of stack
         stack.add(pair(null, null));
+
+        // Variables needed for constructing Dancing Links Matrix
         boolean[][] ecm = ExactCover.MATRICES.get(grid.length);
         dlm = new DancingLinks(ecm);
         DancingLinks.Column root = dlm.get();
@@ -49,18 +52,28 @@ public class DLX {
         return this.solutions;
     }
 
+    /**
+     * Searches for valid solutions (up to solutionLimit or stepLimit) to the initialized dlm.
+     * @param solutionLimit Number of additional solutions found that will trigger the search to stop.
+     * @param stepLimit Number of steps taken that will trigger the search to stop.
+     */
     public void search(int solutionLimit, int stepLimit) {
         int nSteps = 0;
         int nSolutions = 0;
-        int initialSolutionsSize;
-        while(level>=0 || nSolutions<solutionLimit || nSteps<stepLimit) {
-            initialSolutionsSize = solutions.size();
+        int stepSolutionsSize;
+        while(level>=0 && nSolutions<solutionLimit && nSteps<stepLimit) {
+            stepSolutionsSize = solutions.size();
             step();
             nSteps++;
-            if (solutions.size()>initialSolutionsSize) nSolutions++;
+            if (solutions.size()>stepSolutionsSize) nSolutions++;
         }
     }
 
+    /**
+     * Runs a single iteration of the DLX algorithm. This is a non-recursive version of DLX.
+     * Basically Donald Knuth's implementation, but instead of actual recursion,
+     * a "stack" keeps track of the state at each level of "recursion".
+     */
     private void step() {
         // Each level stack is equivalent to the recursion depth
         DancingLinks.Column root = dlm.get();
@@ -86,9 +99,9 @@ public class DLX {
                 if (c!=null) {
                     // Cover the chosen column and iterate through the rows
                     c.cover();
-                    if (stack.size()>level) stack.set(level, pair(c ,c));
+                    stack.set(level, pair(c ,c));
                     r = c;
-                } else return; // Exit Early
+                }
             }
         }
 
@@ -136,7 +149,7 @@ public class DLX {
     private DancingLinks.Node[] pair(DancingLinks.Column a, DancingLinks.Node b) {
         DancingLinks.Node[] p = new DancingLinks.Node[2];
         p[COL_IND] = a;
-        p[NODE_IND] = a;
+        p[NODE_IND] = b;
         return p;
     }
 }
