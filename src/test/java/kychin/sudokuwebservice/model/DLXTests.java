@@ -62,7 +62,7 @@ public class DLXTests {
     }
 
     // Helper for findsSolutions()
-    private void checkSolutions(List<List<DancingLinks.Node>> solutions, int nSols, int solSize) {
+    private void checkSolutions(List<List<Action>> solutions, int nSols, int solSize) {
         assertEquals(nSols, solutions.size());
         for (int i=0; i<solutions.size(); i++) {
             assertEquals(solSize, solutions.get(0).size());

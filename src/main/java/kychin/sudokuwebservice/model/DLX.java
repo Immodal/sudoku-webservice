@@ -2,21 +2,29 @@ package kychin.sudokuwebservice.model;
 
 import java.util.*;
 
-public class DLX {
+public class DLX extends Solver {
     private int level = 0;
     private final int COL_IND = 0;
     private final int NODE_IND = 1;
-    private final List<DancingLinks.Node[]> stack = new ArrayList<>(); // "Recursion" stack
-    private final List<DancingLinks.Node> solution = new LinkedList<>();
-    private final List<List<DancingLinks.Node>> solutions = new ArrayList<>();
 
+    private final List<DancingLinks.Node[]> stack; // "Recursion" stack
+    private final List<DancingLinks.Node> solution;
+    private final Map<Integer, Action> lookup;
     private final DancingLinks dlm;
 
+    /**
+     * Sudoku Solver that uses the DLX Algorithm by Donald Knuth
+     * @param grid Int matrix representation of puzzle state
+     */
     public DLX(int[][] grid) {
-        // Initialize first level of stack
+        // Initialize stack with first level
+        stack = new ArrayList<>();
         stack.add(pair(null, null));
+        // Initilize linkedlist used for interim solutions
+        solution = new LinkedList<>();
 
         // Variables needed for constructing Dancing Links Matrix
+        lookup = ExactCover.LOOKUPS.get(grid.length);
         boolean[][] ecm = ExactCover.MATRICES.get(grid.length);
         dlm = new DancingLinks(ecm);
         DancingLinks.Column root = dlm.get();
@@ -44,29 +52,21 @@ public class DLX {
         }
     }
 
+    /**
+     * Get String representation of the Dancing Links Matrix
+     * @return String representation of the Dancing Links Matrix
+     */
     public String getDLMString() {
         return this.dlm.toString();
     }
 
-    public List<List<DancingLinks.Node>> getSolutions() {
-        return this.solutions;
-    }
-
     /**
-     * Searches for valid solutions (up to solutionLimit or stepLimit) to the initialized dlm.
-     * @param solutionLimit Number of additional solutions found that will trigger the search to stop.
-     * @param stepLimit Number of steps taken that will trigger the search to stop.
+     * Checks if the algorithm has searched all possible paths
+     * @return true if algorithm has no remaining iterations
      */
-    public void search(int solutionLimit, int stepLimit) {
-        int nSteps = 0;
-        int nSolutions = 0;
-        int stepSolutionsSize;
-        while(level>=0 && nSolutions<solutionLimit && nSteps<stepLimit) {
-            stepSolutionsSize = solutions.size();
-            step();
-            nSteps++;
-            if (solutions.size()>stepSolutionsSize) nSolutions++;
-        }
+    @Override
+    public boolean searchIsComplete() {
+        return level<0;
     }
 
     /**
@@ -74,7 +74,8 @@ public class DLX {
      * Basically Donald Knuth's implementation, but instead of actual recursion,
      * a "stack" keeps track of the state at each level of "recursion".
      */
-    private void step() {
+    @Override
+    protected void step() {
         // Each level stack is equivalent to the recursion depth
         DancingLinks.Column root = dlm.get();
         DancingLinks.Column c = (DancingLinks.Column) stack.get(level)[COL_IND];
@@ -85,7 +86,11 @@ public class DLX {
             if (root.right==root) {
                 // Check if its complete
                 // Store the solution
-                solutions.add(new ArrayList<>(solution));
+                List<Action> actions = new ArrayList<>();
+                for (DancingLinks.Node node : solution) {
+                    actions.add(lookup.get(node.getId()));
+                }
+                solutions.add(actions);
                 // Backtrack
                 level--;
                 return; // Exit Early

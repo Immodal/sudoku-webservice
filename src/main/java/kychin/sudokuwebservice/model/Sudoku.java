@@ -8,14 +8,14 @@ public class Sudoku {
     private final String INITIAL_STATE;
 
     private int[][] grid;
-    private DLX dlx;
+    private Solver solver;
 
     public Sudoku(UUID id, String state) {
         this.ID = id;
         this.INITIAL_STATE = state;
 
         this.grid = State.toGrid(state);
-        this.dlx = new DLX(this.grid);
+        this.solver = new DLX(this.grid);
     }
 
     /**

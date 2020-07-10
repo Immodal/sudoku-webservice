@@ -5,6 +5,7 @@ import java.util.*;
 public class ExactCover {
     public static final Set<Integer> SIZES = Set.of(4, 9, 16, 25);
     public static final Map<Integer, boolean[][]> MATRICES = makeMatrices();
+    public static final Map<Integer, Map<Integer, Action>> LOOKUPS = makeLookups();
 
     /**
      * Calculates the row index on the ECM given the parameters
@@ -28,6 +29,35 @@ public class ExactCover {
     }
 
     /**
+     * Pre-make row index lookups for all Exact Cover Matrices supported sizes and map to their size.
+     * @return Map that maps each lookup to their size
+     */
+    private static Map<Integer, Map<Integer, Action>> makeLookups() {
+        Map<Integer, Map<Integer, Action>> lookups = new HashMap<>();
+        for (int size: SIZES) {
+            lookups.put(size, makeLookup(new int[size][size]));
+        }
+        return Collections.unmodifiableMap(lookups);
+    }
+
+    /**
+     * @param grid Int matrix representing the Sudoku grid
+     * @return Map that maps each row index on an Exact Cover matrix to an Action
+     */
+    private static Map<Integer, Action> makeLookup(int[][] grid) {
+        Map<Integer, Action> lookup = new HashMap<>();
+        for (int i=0; i<grid.length; i++) {
+            for (int j=0; j<grid[0].length; j++) {
+                for (int v=1; v<grid.length+1; v++) {
+                    int row = ExactCover.getMatrixRowIndex(i, j, v, grid);
+                    lookup.put(row, new Action(i, j, v));
+                }
+            }
+        }
+        return Collections.unmodifiableMap(lookup);
+    }
+
+    /**
      * Pre-make Exact Cover Matrices for all supported sizes and map to their size.
      * @return Map that maps each matrix to their size
      */
@@ -44,7 +74,7 @@ public class ExactCover {
      * @param grid Int matrix representing the Sudoku grid
      * @return Exact Cover Matrix
      */
-    protected static boolean[][] makeMatrix(int[][] grid) {
+    private static boolean[][] makeMatrix(int[][] grid) {
         int nGridRows = grid.length;
         int nGridCols = grid[0].length;
         int nValues = grid.length;
