@@ -3,9 +3,9 @@ package kychin.sudokuwebservice.model;
 import java.util.*;
 
 public abstract class Solver {
-    protected final List<List<Action>> solutions = new ArrayList<>();
+    protected final List<String> solutions = new ArrayList<>();
 
-    public List<List<Action>> getSolutions() {
+    public List<String> getSolutions() {
         return solutions;
     }
 
@@ -13,7 +13,7 @@ public abstract class Solver {
      * Checks if the algorithm has searched all possible paths
      * @return true if algorithm has no remaining iterations
      */
-    public abstract boolean searchIsComplete();
+    public abstract boolean isComplete();
 
     /**
      * Searches for valid solutions (up to solutionLimit or stepLimit) to the puzzle.
@@ -24,7 +24,7 @@ public abstract class Solver {
         int nSteps = 0;
         int nSolutions = 0;
         int stepSolutionsSize;
-        while(!searchIsComplete() && nSolutions<solutionLimit && nSteps<stepLimit) {
+        while(!isComplete() && nSolutions<solutionLimit && nSteps<stepLimit) {
             stepSolutionsSize = solutions.size();
             step();
             nSteps++;

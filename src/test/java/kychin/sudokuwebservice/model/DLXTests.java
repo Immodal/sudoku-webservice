@@ -50,22 +50,22 @@ public class DLXTests {
     void findsSolutions() {
         String state = "295743861431865900876192543387459216612387495549216738763524189928671354154938600";
         assertTrue(State.isValid(state));
-        DLX dlx = new DLX(State.toGrid(state));
+        Solver dlx = new DLX(State.toGrid(state));
         dlx.search(1000, 10000);
-        checkSolutions(dlx.getSolutions(), 2, 4);
+        checkSolutions(dlx.getSolutions(), 2);
 
         state = "0000000000000000";
         assertTrue(State.isValid(state));
         dlx = new DLX(State.toGrid(state));
         dlx.search(1000, 10000);
-        checkSolutions(dlx.getSolutions(), 288, 16);
+        checkSolutions(dlx.getSolutions(), 288);
     }
 
     // Helper for findsSolutions()
-    private void checkSolutions(List<List<Action>> solutions, int nSols, int solSize) {
+    private void checkSolutions(List<String> solutions, int nSols) {
         assertEquals(nSols, solutions.size());
-        for (int i=0; i<solutions.size(); i++) {
-            assertEquals(solSize, solutions.get(0).size());
+        for (String solution : solutions) {
+            assertTrue(State.isValid(solution));
         }
     }
 }

@@ -7,6 +7,7 @@ public class DLX extends Solver {
     private final int COL_IND = 0;
     private final int NODE_IND = 1;
 
+    private final int[][] grid;
     private final List<DancingLinks.Node[]> stack; // "Recursion" stack
     private final List<DancingLinks.Node> solution;
     private final Map<Integer, Action> lookup;
@@ -17,6 +18,7 @@ public class DLX extends Solver {
      * @param grid Int matrix representation of puzzle state
      */
     public DLX(int[][] grid) {
+        this.grid = grid;
         // Initialize stack with first level
         stack = new ArrayList<>();
         stack.add(pair(null, null));
@@ -65,7 +67,7 @@ public class DLX extends Solver {
      * @return true if algorithm has no remaining iterations
      */
     @Override
-    public boolean searchIsComplete() {
+    public boolean isComplete() {
         return level<0;
     }
 
@@ -86,11 +88,7 @@ public class DLX extends Solver {
             if (root.right==root) {
                 // Check if its complete
                 // Store the solution
-                List<Action> actions = new ArrayList<>();
-                for (DancingLinks.Node node : solution) {
-                    actions.add(lookup.get(node.getId()));
-                }
-                solutions.add(actions);
+                solutions.add(convertSolutionToString(solution));
                 // Backtrack
                 level--;
                 return; // Exit Early
@@ -156,5 +154,18 @@ public class DLX extends Solver {
         p[COL_IND] = a;
         p[NODE_IND] = b;
         return p;
+    }
+
+    /**
+     * Converts the given interim solution to the required string representation
+     * @param solution Interim solution
+     * @return String representation of solved state
+     */
+    private String convertSolutionToString(List<DancingLinks.Node> solution) {
+        for (DancingLinks.Node node : solution) {
+            Action a = lookup.get(node.getId());
+            grid[a.i][a.j] = a.v;
+        }
+        return State.fromGrid(grid);
     }
 }
