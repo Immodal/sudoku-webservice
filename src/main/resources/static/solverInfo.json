@@ -1,0 +1,25 @@
+{
+    "parameters": {
+        "state": {
+            "description": "String, 0123.... The parameter state is the String representation of the puzzle state using 0-9 & A-Z (or a-z) in order, where 0 represents an empty cell. For Example, size 4 puzzles will only be allowed 0-4, size 16 puzzles will use 1-9 and A-G. The length of State is equal to the number of cells in puzzle, size 9 puzzles have 9x9 = 81 cells. It is also not allowed to violate any Sudoku rules such as repeating values (except 0) in the same row, column or block.",
+            "examples": [
+                "0000000000000000",
+                "1400004121000012",
+                "200080300060070084030500209000105408000000000402706000301007040720040060004010003",
+                "F01A004D3080000E0509001AC0207046006BC9GE0401083004308B20075G9F00A8000G50001FE0000020040000B0A7GCCB70E0816000F9000040A0B020E0100D00000DC0F00B00019CB2G003100A40E7700100E2000D800000000760G2003C9FG9000CD4B106000832056100E0A0G0006D00BE0050900070000F030G78D060A2",
+                "070M3L20KGI05OF9100P08BA00J000F0BM018000DL00G0000E00BE000I01C00P030HN0D000L5P20HD0N0890AL00BJ0C00000I1L407H000000K00O0M00CNGF05070K60G00P1CA0000B0O00J06I0K000275MBH0J0OA30000400JP0M0500000I370G0200F6AC00004000J6K70E00MF0300822M3A4CID00000F8N00P1G0070M3N0G1P68005K00000J40H0FC100L00300OPA00M000B6E4DN08040AGC0B000E000709M603050C75EJD0003009OH00100M00KB20605N00000J800K3DLP0G170B00M9L0048H000006K5FGCJOHK00L07G00M0I46E0009000019G800O0H05ED0000020A0IL00700008KE0A09L51MG000N06H0400C0B0000FGOA00D0H8030E06E5200B0700O000000GD0PJIN00000N0LP00C80I60907M0EOGL00090G80F0700P40B0006K00J0000A0056000DB0IE0H000C00IGF0E00HD4L3051P0ONA90B0"
+            ]
+        },
+        "n": {
+            "description": "Integer, n>0. The parameter n is the maximum number of solutions to look for in a given puzzle. Note that solvers are also limited by an internal maximum step count of 5000."
+        }
+    },
+    "response": {
+        "solutions": {
+            "description": "List of solutions for the given state up to length n."
+        },
+        "isComplete": {
+            "description": "True if solver has found every possible solution. Otherwise, the number of solutions is greater than n and/or the query used up its resource quota before completing the search."
+        }
+    }
+}
