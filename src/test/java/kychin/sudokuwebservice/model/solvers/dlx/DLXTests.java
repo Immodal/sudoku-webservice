@@ -1,6 +1,9 @@
-package kychin.sudokuwebservice.model;
+package kychin.sudokuwebservice.model.solvers.dlx;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import kychin.sudokuwebservice.model.Solver;
+import kychin.sudokuwebservice.model.State;
 import org.junit.jupiter.api.Test;
 import java.util.*;
 

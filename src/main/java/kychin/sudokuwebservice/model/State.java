@@ -3,10 +3,13 @@ package kychin.sudokuwebservice.model;
 import org.apache.commons.lang3.StringUtils;
 import java.util.*;
 
+/**
+ * This class is for handling state strings that represent Sudoku puzzles.
+ */
 public class State {
 
     // Supported Sizes
-    public static final Set<Integer> SIZES = ExactCover.SIZES;
+    public static final Set<Integer> SIZES = Set.of(4, 9, 16, 25);
     // Supported Symbols
     public static final String SYMBOLS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     // Lookup table for symbols to their integer counterpart for grids

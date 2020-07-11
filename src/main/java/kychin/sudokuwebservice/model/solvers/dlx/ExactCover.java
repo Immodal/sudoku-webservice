@@ -1,16 +1,20 @@
-package kychin.sudokuwebservice.model;
+package kychin.sudokuwebservice.model.solvers.dlx;
+
+import kychin.sudokuwebservice.model.Action;
+import kychin.sudokuwebservice.model.State;
 
 import java.util.*;
 
 /**
- *
+ * Exact Cover Matrices contain all possible solutions for the problem they represent.
+ * This class has been set up to generate matrices for Square Sudoku puzzles.
  */
 public class ExactCover {
     /**
      * All Information needed by other classes are pre-computed
      */
     // Supported Sizes
-    public static final Set<Integer> SIZES = Set.of(4, 9, 16, 25);
+    public static final Set<Integer> SIZES = State.SIZES;
     // Exact Cover Matrices
     public static final Map<Integer, boolean[][]> MATRICES = makeMatrices();
     // maps size to "row index -> Action" lookup tables for ECMs

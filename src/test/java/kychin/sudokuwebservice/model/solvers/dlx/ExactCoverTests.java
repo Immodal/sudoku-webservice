@@ -1,6 +1,8 @@
-package kychin.sudokuwebservice.model;
+package kychin.sudokuwebservice.model.solvers.dlx;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import kychin.sudokuwebservice.model.solvers.dlx.ExactCover;
 import org.junit.jupiter.api.Test;
 
 public class ExactCoverTests {

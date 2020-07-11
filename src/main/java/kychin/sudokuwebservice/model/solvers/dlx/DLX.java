@@ -1,4 +1,8 @@
-package kychin.sudokuwebservice.model;
+package kychin.sudokuwebservice.model.solvers.dlx;
+
+import kychin.sudokuwebservice.model.Action;
+import kychin.sudokuwebservice.model.Solver;
+import kychin.sudokuwebservice.model.State;
 
 import java.util.*;
 

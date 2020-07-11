@@ -2,6 +2,8 @@ package kychin.sudokuwebservice.api;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import kychin.sudokuwebservice.model.solvers.dlx.DLX;
+import kychin.sudokuwebservice.model.solvers.dlx.ExactCover;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,7 +51,7 @@ public class SolverController {
         state = state.toUpperCase();
         if (State.isValid(state) && n>0) {
             Solver solver = new DLX(state);
-            solver.search(n, 5000);
+            solver.search(n, 5000); // Hardcoded step limit
 
             Map<String, Object> body = new HashMap<>();
             body.put("solutions", solver.getSolutions());
