@@ -4,9 +4,12 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.*;
 
 public class State {
-    // Sizes are equal to the number of cells in each row/column.
+
+    // Supported Sizes
     public static final Set<Integer> SIZES = ExactCover.SIZES;
+    // Supported Symbols
     public static final String SYMBOLS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    // Lookup table for symbols to their integer counterpart for grids
     public static final Map<String, Integer> SYMBOL_MAP = initSymbolMap();
 
     /**

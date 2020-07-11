@@ -1,7 +1,7 @@
 {
     "parameters": {
         "state": {
-            "description": "String, 0123.... The parameter state is the String representation of the puzzle state using 0-9 & A-Z (or a-z) in order, where 0 represents an empty cell. For Example, size 4 puzzles will only be allowed 0-4, size 16 puzzles will use 1-9 and A-G. The length of State is equal to the number of cells in puzzle, size 9 puzzles have 9x9 = 81 cells. It is also not allowed to violate any Sudoku rules such as repeating values (except 0) in the same row, column or block.",
+            "description": "String, '0123...'. The parameter state is the String representation of the puzzle state using 0-9 & A-Z (or a-z) in order, where 0 represents an empty cell. For Example, size 4 puzzles will only be allowed 0-4, size 16 puzzles will use 1-9 and A-G. The length of State is equal to the number of cells in puzzle, size 9 puzzles have 9x9 = 81 cells. It is also not allowed to violate any Sudoku rules such as repeating values (except 0) in the same row, column or block.",
             "examples": [
                 "0000000000000000",
                 "1400004121000012",

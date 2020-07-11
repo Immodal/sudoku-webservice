@@ -39,7 +39,8 @@ public class SolverController {
     /**
      * Solve a given puzzle state
      * @param state String representation of Sudoku puzzle
-     * @return solutions found
+     * @param n Maximum number of solutions to search for
+     * @return solutions found and solver status
      */
     @GetMapping("")
     public ResponseEntity<Map<String, Object>> solveState(

@@ -2,9 +2,18 @@ package kychin.sudokuwebservice.model;
 
 import java.util.*;
 
+/**
+ *
+ */
 public class ExactCover {
+    /**
+     * All Information needed by other classes are pre-computed
+     */
+    // Supported Sizes
     public static final Set<Integer> SIZES = Set.of(4, 9, 16, 25);
+    // Exact Cover Matrices
     public static final Map<Integer, boolean[][]> MATRICES = makeMatrices();
+    // maps size to "row index -> Action" lookup tables for ECMs
     public static final Map<Integer, Map<Integer, Action>> LOOKUPS = makeLookups();
 
     /**
@@ -26,6 +35,27 @@ public class ExactCover {
         // Because 0 is not included in the EC Matrix, the index of each value is value-1
         int valueIndex = value - 1;
         return rowOffset + colOffset + valueIndex;
+    }
+
+    /**
+     * Generates a string representation of the Exact Cover Matrix.
+     * @param matrix Exact Cover Matrix
+     * @return String representation of ECM
+     */
+    public static String toString(boolean[][] matrix) {
+        StringBuilder strGrid = new StringBuilder();
+        for (int i=0; i<matrix.length ; i++) {
+            for (int j=0; j<matrix[0].length ; j++) {
+                // Values
+                if (matrix[i][j]) {
+                    strGrid.append("1");
+                } else {
+                    strGrid.append(" ");
+                }
+            }
+            strGrid.append("\n");
+        }
+        return strGrid.toString();
     }
 
     /**
@@ -213,26 +243,5 @@ public class ExactCover {
                 }
             }
         }
-    }
-
-    /**
-     * Generates a string representation of the Exact Cover Matrix.
-     * @param matrix Exact Cover Matrix
-     * @return String representation of ECM
-     */
-    public static String toString(boolean[][] matrix) {
-        StringBuilder strGrid = new StringBuilder();
-        for (int i=0; i<matrix.length ; i++) {
-            for (int j=0; j<matrix[0].length ; j++) {
-                // Values
-                if (matrix[i][j]) {
-                    strGrid.append("1");
-                } else {
-                    strGrid.append(" ");
-                }
-            }
-            strGrid.append("\n");
-        }
-        return strGrid.toString();
     }
 }
