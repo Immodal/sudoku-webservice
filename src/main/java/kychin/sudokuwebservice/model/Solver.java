@@ -3,8 +3,15 @@ package kychin.sudokuwebservice.model;
 import java.util.*;
 
 public abstract class Solver {
+    /**
+     * List of solutions as valid states as determined by State.isValid()
+     */
     protected final List<String> solutions = new ArrayList<>();
 
+    /**
+     * Getter for solutions
+     * @return solutions
+     */
     public List<String> getSolutions() {
         return solutions;
     }

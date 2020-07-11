@@ -1,5 +1,8 @@
 package kychin.sudokuwebservice.model;
 
+/**
+ * Data object that represents the action of placing a value v into position grid[i,j].
+ */
 public class Action {
     public final int i;
     public final int j;

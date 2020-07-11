@@ -2,56 +2,30 @@ package kychin.sudokuwebservice.model;
 
 import java.util.*;
 
+/**
+ * Sudoku Solver that uses the DLX Algorithm by Donald Knuth
+ */
 public class DLX extends Solver {
-    private int level = 0;
-    private final int COL_IND = 0;
-    private final int NODE_IND = 1;
+    private int level = 0; // "Recursion" level
+    private final int COL_IND = 0; // Position of Column object in the array returned from pair()
+    private final int NODE_IND = 1; // Position of Node object in the array returned from pair()
 
-    private final int[][] grid;
     private final List<DancingLinks.Node[]> stack; // "Recursion" stack
-    private final List<DancingLinks.Node> solution;
-    private final Map<Integer, Action> lookup;
-    private final DancingLinks dlm;
+    private final List<DancingLinks.Node> solution; // Interim solution
+    private final DancingLinks dlm; // The Dancing Links Matrix
 
     /**
-     * Sudoku Solver that uses the DLX Algorithm by Donald Knuth
-     * @param grid Int matrix representation of puzzle state
+     * Constructor
+     * @param state String representation of puzzle state
      */
-    public DLX(int[][] grid) {
-        this.grid = grid;
+    public DLX(String state) {
+        // DLM at the core of this solver
+        dlm = new DancingLinks(state);
+        // Initialize LinkedList used for interim solutions
+        solution = new LinkedList<>();
         // Initialize stack with first level
         stack = new ArrayList<>();
         stack.add(pair(null, null));
-        // Initilize linkedlist used for interim solutions
-        solution = new LinkedList<>();
-
-        // Variables needed for constructing Dancing Links Matrix
-        lookup = ExactCover.LOOKUPS.get(grid.length);
-        boolean[][] ecm = ExactCover.MATRICES.get(grid.length);
-        dlm = new DancingLinks(ecm);
-        DancingLinks.Column root = dlm.get();
-
-        // Make a new Dancing Links Matrix and then cover columns that have already been satisfied by grid.
-        for (int i=0; i<grid.length; i++) {
-            for (int j=0; j<grid[0].length; j++) {
-                int v = grid[i][j];
-                // If it already has a value, cover the columns it satisfies
-                if (v>0) {
-                    int rowInd = ExactCover.getMatrixRowIndex(i, j, v, grid);
-                    // Get the columns that row satisfies
-                    boolean[] row = ecm[rowInd];
-                    Set<Integer> columns = new HashSet<>();
-                    for (int k=0; k<row.length; k++) {
-                        if (row[k]) columns.add(k);
-                    }
-
-                    // Find the column object in dlx and cover
-                    for (DancingLinks.Column c=root.getRight(); c!=root; c=c.getRight()) {
-                        if (columns.contains(c.getId())) c.cover();
-                    }
-                }
-            }
-        }
     }
 
     /**
@@ -162,8 +136,9 @@ public class DLX extends Solver {
      * @return String representation of solved state
      */
     private String convertSolutionToString(List<DancingLinks.Node> solution) {
+        int[][] grid = dlm.getGrid();
         for (DancingLinks.Node node : solution) {
-            Action a = lookup.get(node.getId());
+            Action a = dlm.getAction(node);
             grid[a.i][a.j] = a.v;
         }
         return State.fromGrid(grid);

@@ -42,7 +42,7 @@ public class DLXTests {
                 "Column 63: 47,\n";
 
         assertTrue(State.isValid(state));
-        DLX dlx = new DLX(State.toGrid(state));
+        DLX dlx = new DLX(state);
         assertEquals(dlx.getDLMString(), dlmExp);
     }
 
@@ -50,13 +50,13 @@ public class DLXTests {
     void findsSolutions() {
         String state = "295743861431865900876192543387459216612387495549216738763524189928671354154938600";
         assertTrue(State.isValid(state));
-        Solver dlx = new DLX(State.toGrid(state));
+        Solver dlx = new DLX(state);
         dlx.search(1000, 10000);
         checkSolutions(dlx.getSolutions(), 2);
 
         state = "0000000000000000";
         assertTrue(State.isValid(state));
-        dlx = new DLX(State.toGrid(state));
+        dlx = new DLX(state);
         dlx.search(1000, 10000);
         checkSolutions(dlx.getSolutions(), 288);
     }

@@ -2,18 +2,67 @@ package kychin.sudokuwebservice.model;
 
 import java.util.*;
 
+/**
+ * Dancing Links data structure for representing sparse matrices
+ * Here it is used to represent Exact Cover matrices
+ */
 public class DancingLinks {
+    public final String INITIAL_STATE;
     private final Column root;
+    private final Map<Integer, Action> lookup;
 
-    public DancingLinks(boolean[][] ecm) {
-        this.root = fromExactCover(ecm);
+    /**
+     * Constructor
+     * @param state String representation of puzzle state
+     */
+    public DancingLinks(String state) {
+        this.INITIAL_STATE = state;
+
+        int[][] grid = State.toGrid(INITIAL_STATE);
+        this.root = fromExactCover(ExactCover.MATRICES.get(grid.length));
+        this.lookup = ExactCover.LOOKUPS.get(grid.length);
+        initialize(this, grid);
     }
 
+    /**
+     * Getter for root
+     * @return root
+     */
     public Column get() {
         return root;
     }
 
+    /**
+     * Get INITIAL_STATE as an Int Matrix
+     * @return Int Matrix representation of INITIAL_STATE
+     */
+    public int[][] getGrid() {
+        return State.toGrid(INITIAL_STATE);
+    }
+
+    /**
+     * Get the Action object associated with the given Node's ID
+     * @param node
+     * @return
+     */
+    public Action getAction(Node node) {
+        return lookup.get(node.getId());
+    }
+
+    /**
+     * Get the string representation of this DLM
+     * @return String representation of DLM
+     */
     public String toString() {
+        return toString(root);
+    }
+
+    /**
+     * Converts the DLM to its string representation
+     * @param root Root Column of the DLM
+     * @return String representation of DLM
+     */
+    protected static String toString(Column root) {
         StringBuilder s = new StringBuilder();
         for (Column c=root.getRight(); c!=root; c=c.getRight()) {
             s.append("Column ").append(c.getId()).append(": ");
@@ -22,6 +71,38 @@ public class DancingLinks {
             s.append("\n");
         }
         return s.toString();
+    }
+
+    /**
+     * Goes through DLM and covers columns that grid satisfies
+     * @param dlm Dancing Links Matrix
+     * @param grid Int Matrix representation of state
+     */
+    protected static void initialize(DancingLinks dlm, int[][] grid) {
+        boolean[][] ecm = ExactCover.MATRICES.get(grid.length);
+        Column root = dlm.get();
+
+        // Cover columns that have already been satisfied by grid.
+        for (int i=0; i<grid.length; i++) {
+            for (int j=0; j<grid[0].length; j++) {
+                int v = grid[i][j];
+                // If it already has a value, cover the columns it satisfies
+                if (v>0) {
+                    int rowInd = ExactCover.getMatrixRowIndex(i, j, v, grid);
+                    // Get the columns that row satisfies
+                    boolean[] row = ecm[rowInd];
+                    Set<Integer> columns = new HashSet<>();
+                    for (int k=0; k<row.length; k++) {
+                        if (row[k]) columns.add(k);
+                    }
+
+                    // Find the column object in dlx and cover
+                    for (Column c=root.getRight(); c!=root; c=c.getRight()) {
+                        if (columns.contains(c.getId())) c.cover();
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -68,7 +149,7 @@ public class DancingLinks {
         protected Node left = this;
         protected Node right = this;
 
-        private int id;
+        private final int id;
         private Column column;
 
         public Node(int id) {

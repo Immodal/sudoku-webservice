@@ -62,8 +62,7 @@ public class DancingLinksTests {
                 {false, true, false, false, true},
         };
 
-        DancingLinks dc = new DancingLinks(ecm);
-        DancingLinks.Column root = dc.get();
+        DancingLinks.Column root = DancingLinks.fromExactCover(ecm);
         assertEquals(root, root.right.right.right.right.right.right);
         assertEquals(root, root.left.left.left.left.left.left);
         checkColumn(root.right, 0, 2);
@@ -103,8 +102,8 @@ public class DancingLinksTests {
         };
         String exp = "Column 0: 0,1,\nColumn 1: 2,3,\nColumn 2: 1,\nColumn 3: 0,\nColumn 4: 0,1,3,\n";
 
-        DancingLinks dc = new DancingLinks(ecm);
-        assertEquals(exp, dc.toString());
+        DancingLinks.Column root = DancingLinks.fromExactCover(ecm);
+        assertEquals(exp, DancingLinks.toString(root));
     }
 
     @Test
@@ -116,8 +115,7 @@ public class DancingLinksTests {
                 {false, true, false, false, true},
         };
 
-        DancingLinks dc = new DancingLinks(ecm);
-        DancingLinks.Column root = dc.get();
+        DancingLinks.Column root = DancingLinks.fromExactCover(ecm);
         DancingLinks.Column c2 = root.getRight().getRight().getRight();
         c2.cover();
         assertEquals(root.right, root.right.right.right.right.right.right); // Column gone
