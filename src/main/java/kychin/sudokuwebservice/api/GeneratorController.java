@@ -28,7 +28,7 @@ public class GeneratorController {
      * @param maxEmptyCells Maximum number of empty cells allowed for the puzzle
      * @return String representation of the puzzle
      */
-    @GetMapping(value="", params = {"size", "maxSolutions", "maxEmptyCells"})
+    @GetMapping(value="", params = {"size"})
     public ResponseEntity<Map<String, Object>> generatePuzzle(
             @RequestParam int size,
             @RequestParam(required=false, defaultValue="1") int maxSolutions,
@@ -49,7 +49,7 @@ public class GeneratorController {
      * @param maxEmptyCells Maximum number of empty cells allowed for the puzzle
      * @return String representation of the puzzle
      */
-    @GetMapping(value="", params = {"state", "maxSolutions", "maxEmptyCells"})
+    @GetMapping(value="", params = {"state"})
     public ResponseEntity<Map<String, Object>> generatePuzzleFromSolution(
             @RequestParam String state,
             @RequestParam(required=false, defaultValue="1") int maxSolutions,
