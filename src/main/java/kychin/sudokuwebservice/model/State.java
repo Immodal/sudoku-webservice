@@ -55,6 +55,15 @@ public class State {
      * @param state String representation of game state
      * @return true if state is valid
      */
+    public static boolean isValidAndComplete(String state) {
+        return isValid(state) && !StringUtils.contains(state, "0");
+    }
+
+    /**
+     * Checks the given state to determine if it is valid for conversion to a grid.
+     * @param state String representation of game state
+     * @return true if state is valid
+     */
     public static boolean isValid(String state) {
         return sizeIsValid(state) && symbolsAreValid(state) &&
                 rowsAreUnique(state) && colsAreUnique(state) &&

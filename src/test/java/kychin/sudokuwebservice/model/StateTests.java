@@ -33,6 +33,24 @@ public class StateTests {
     }
 
     @Test
+    void checksStateIsValidAndComplete() {
+        String state = "";
+        assertFalse(State.isValidAndComplete(state));
+        state = "1234";
+        assertFalse(State.isValidAndComplete(state));
+        state = "3124421313422431";
+        assertTrue(State.isValidAndComplete(state));
+        state = "3124421313422430";
+        assertFalse(State.isValidAndComplete(state));
+        state = "3124021313422431";
+        assertFalse(State.isValidAndComplete(state));
+        state = "3124421313322431"; // Repeat at index 9,10
+        assertFalse(State.isValidAndComplete(state));
+        state = "001000000230009400009007000000000700050890063096372514300604957574000006968025001";
+        assertFalse(State.isValidAndComplete(state));
+    }
+
+    @Test
     void checksStateIsValid() {
         String state = "";
         assertFalse(State.isValid(state));

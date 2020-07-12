@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
+// TODO Add Tests for Solver API
 @RestController
 @RequestMapping("/solve")
 public class SolverController {
@@ -51,7 +52,7 @@ public class SolverController {
         state = state.toUpperCase();
         if (State.isValid(state) && n>0) {
             Solver solver = new DLX(state);
-            solver.search(n, 5000); // Hardcoded step limit
+            solver.search(n, state.length()*10);
 
             Map<String, Object> body = new HashMap<>();
             body.put("solutions", solver.getSolutions());
