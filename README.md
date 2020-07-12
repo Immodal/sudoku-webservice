@@ -40,3 +40,44 @@ Response Body:
     "isComplete": true
 }
 ```
+
+# Generator
+
+Request URL: `http://localhost:8080/generate`
+
+Parameters:
+
+| Name | Description |
+| ---- |:----------- |
+| state | See description in Solver. Only difference here is that the state must be a valid SOLVED state. |
+| size | Integer, size = [4,9,16]. The size of a puzzle is equal to the number of cells in a row. For example a 9x9 puzzle has a size of 9. |
+| maxSolutions | Integer, maxSolutions>0, default=1. This is to control the number of solutions a returned puzzle is allowed to have. |
+| maxEmptyCells | Integer, maxEmptyCells>=0, default=0. This is to control the number of empty cells a returned puzzle is allowed to have. When set to 0, it is unlimited. |
+
+# Example
+
+Either state or size is required in a request and they are mutually exlusive:
+
+GET with `size`: 
+
+`http://localhost:8080/generate?size=9`
+
+Response Body: 
+
+```
+{
+    "puzzle": "006009030001200000000537200000080012600000578004000000005062007000950000040001000"
+}
+```
+
+GET with `state`: 
+
+`http://localhost:8080/generate?state=756389241493621875812547396268795134579134682134862759987416523341258967625973418`
+
+Response Body: 
+
+```
+{
+    "puzzle": "000080040000600005810040306200790034509000000000060000007000000301008900000900408"
+}
+```
