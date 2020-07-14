@@ -14,7 +14,7 @@ import java.util.*;
 @RestController
 @RequestMapping("/generate")
 public class GeneratorController {
-    private static final Set<Integer> SIZES = initSizes();
+    protected static final Set<Integer> SIZES = initSizes();
     private static Set<Integer> initSizes() {
         Set<Integer> s = new HashSet<>(State.SIZES);
         s.remove(25);
